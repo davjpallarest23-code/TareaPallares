@@ -1,0 +1,9 @@
+.tarjeta{
+    background-color: beige;
+    border: 1px solid #ccc;
+    width: 200px;
+    line-height: 1;
+    padding: 8px;
+    border-radius: 2px;
+    font-family: sans-serif;
+}
