@@ -10,11 +10,19 @@ function ListarUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando]=useState(false);
     const [error, setError] = useState(null);
+    const [buscar, setBuscar] = useState("");
 
-    const mostrarDatosUsuarios = async () =>{
+    const mostrarDatosUsuarios = async (name = "") =>{
       try{
         setCargando(true);
-        const url = 'https://jsonplaceholder.typicode.com/users';        
+        let url = '';
+        if (name != ''){
+          url = `https://jsonplaceholder.typicode.com/users?name=${name}`;        
+        }
+        else{
+          url = 'https://jsonplaceholder.typicode.com/users';        
+        }
+
         const resultado = await fetch(url);
         if (!resultado.ok){
           throw new Error("Problemas al mostrar los datos");
@@ -41,10 +49,19 @@ function ListarUsuarios() {
   if(error){
     return <p>Error:{error}</p>
   }
+
+  
     
   return (
     <>
-      <h2>ListarUsuarios</h2>         
+      <h2>ListarUsuarios</h2> 
+      <input 
+        type="text" 
+        value={buscar}       
+        onChange={(e)=>setBuscar(e.target.value)}
+      />        
+      <p>{buscar}</p>
+      <button onClick={()=>mostrarDatosUsuarios(buscar)}>Buscar</button>
       <div className='gridTrajetas'>        
           {
             usuarios.map((u)=>{
