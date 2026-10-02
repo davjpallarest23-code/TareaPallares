@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import './Spinner.css'
 import Button from '@mui/material/Button';
-import Tarjeta from './Tarjeta';
-import { Grid } from '@mui/material';
-import './gridTarjetas.css';
+import Tarjeta from '../components/Tarjeta';
+import '../components/gridTarjetas.css';
+import Spinner from '../components/Spinner';
+import ObtenerUsuarios from '../services/UsuariosService';
+
 
 
 function ListarUsuarios() {
@@ -15,19 +16,7 @@ function ListarUsuarios() {
     const mostrarDatosUsuarios = async (name = "") =>{
       try{
         setCargando(true);
-        let url = '';
-        if (name != ''){
-          url = `https://jsonplaceholder.typicode.com/users?name=${name}`;        
-        }
-        else{
-          url = 'https://jsonplaceholder.typicode.com/users';        
-        }
-
-        const resultado = await fetch(url);
-        if (!resultado.ok){
-          throw new Error("Problemas al mostrar los datos");
-        }           
-        const datosJson = await resultado.json();
+        const datosJson = await ObtenerUsuarios(name);        
         setUsuarios(datosJson);        
       }
       catch (err){
@@ -43,7 +32,7 @@ function ListarUsuarios() {
     },[]);
     
   if(cargando){
-    return <span className="loader"></span>
+    return <Spinner></Spinner>
   }  
 
   if(error){
